@@ -1,0 +1,176 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Countdown Timer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      text-align: center;
+      margin: 40px;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #fff;
+    }
+    h1 {
+      font-size: 2.5em;
+      background: linear-gradient(90deg, #ff6a00, #ee0979);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    #timer {
+      font-size: 64px;
+      margin: 20px;
+      color: #00ff99;
+      font-weight: bold;
+      text-shadow: 0 0 15px rgba(0, 255, 153, 0.7);
+    }
+    input, button {
+      padding: 10px 15px;
+      font-size: 16px;
+      margin: 8px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+    }
+    input {
+      border: 2px solid #fff;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+    input::placeholder {
+      color: #ddd;
+    }
+    button {
+      background: linear-gradient(90deg, #ff512f, #dd2476);
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.3s;
+    }
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    .readme {
+      text-align: left;
+      margin-top: 50px;
+      padding: 25px;
+      background: #ffffffdd;
+      color: #222;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+    .readme h2 {
+      color: #2a5298;
+    }
+    .readme h3 {
+      color: #dd2476;
+    }
+  </style>
+</head>
+<body>
+  <h1>⏳ Countdown Timer Project</h1>
+  <div id="timer">00:00</div>
+
+  <!-- Default 1 min timer -->
+  <button onclick="startTimer(1)">Start 1 Minute Timer</button>
+
+  <!-- Custom timer input -->
+  <div>
+    <input type="number" id="minutesInput" placeholder="Enter minutes">
+    <button onclick="startCustomTimer()">Start Custom Timer</button>
+  </div>
+
+  <script>
+    let interval;
+
+    // Function to start timer
+    function startTimer(minutes) {
+      clearInterval(interval); // clear any running timer
+      let seconds = minutes * 60;
+      const timerDisplay = document.getElementById("timer");
+
+      interval = setInterval(() => {
+        let min = Math.floor(seconds / 60);
+        let sec = seconds % 60;
+        timerDisplay.textContent =
+          `${min.toString().padStart(2, "0")}:${sec.toString().padStart(2, "0")}`;
+        seconds--;
+
+        if (seconds < 0) {
+          clearInterval(interval);
+          timerDisplay.textContent = "00:00";
+          alert("⏰ Time’s up!"); // Trigger alert
+          showNotification("⏰ Time’s up!"); // Trigger browser notification
+        }
+      }, 1000);
+    }
+
+    // Function for custom timer input
+    function startCustomTimer() {
+      const minutes = document.getElementById("minutesInput").value;
+      if (minutes > 0) {
+        startTimer(minutes);
+      } else {
+        alert("Please enter a valid number of minutes!");
+      }
+    }
+
+    // Request notification permission
+    if ("Notification" in window && Notification.permission !== "granted") {
+      Notification.requestPermission();
+    }
+
+    // Show notification if allowed
+    function showNotification(message) {
+      if ("Notification" in window && Notification.permission === "granted") {
+        new Notification(message);
+      }
+    }
+  </script>
+
+  <!-- README Section -->
+  <div class="readme">
+    <h2>📖 Project Documentation (README)</h2>
+
+    <h3>📌 Project Definition</h3>
+    <p>
+      The <b>Countdown Timer</b> is a simple open-source project built using 
+      <b>HTML, CSS, and JavaScript</b>. It allows users to set a timer 
+      (default 1 minute or custom input) and notifies them when the time is up 
+      using both an <b>alert</b> and a <b>browser notification</b>.
+    </p>
+
+    <h3>✨ Features</h3>
+    <ul>
+      <li>Start a default 1-minute timer with one click.</li>
+      <li>Custom timer input (enter your own minutes).</li>
+      <li>Real-time countdown display in <code>mm:ss</code> format.</li>
+      <li>Popup <b>alert</b> when time is up.</li>
+      <li>Browser <b>notification</b> support (if permissions are granted).</li>
+      <li>Clean and modern design, all in one HTML file.</li>
+    </ul>
+
+    <h3>⚙️ How It Works</h3>
+    <ol>
+      <li>User clicks "Start 1 Minute Timer" or enters a custom value.</li>
+      <li>The timer begins counting down each second.</li>
+      <li>When the timer reaches 0, the script:
+        <ul>
+          <li>Shows an <b>alert box</b> with "Time’s up!"</li>
+          <li>Triggers a <b>desktop notification</b> (if allowed by browser).</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h3>🛠️ Technologies Used</h3>
+    <p>HTML5, CSS3, JavaScript (Vanilla JS)</p>
+
+    <h3>📜 License</h3>
+    <p>
+      This project is licensed under the <b>MIT License</b>. 
+      You are free to use, modify, and distribute it.
+    </p>
+  </div>
+</body>
+</html>
